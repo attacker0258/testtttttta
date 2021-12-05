@@ -1,0 +1,27 @@
+id: celo like xss
+
+info:
+  name: celo like XSS
+  author: zinminphy0,dhiyaneshDK
+  reference:
+    - https://www.youtube.com/watch?v=VwLSUHNhrOw&t=142s
+    - https://github.com/projectdiscovery/nuclei-templates/issues/3225
+    - https://twitter.com/zin_min_phyo/status/1465394815042916352
+  severity: medium
+  tags: aem,xss
+
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}/_next/image?url=%2F%2F<h1>POC</h1>&w=640&q=100"
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        words:
+          - "<h1>POC"
+        condition: and
+
+      - type: status
+        status:
+          - 308
